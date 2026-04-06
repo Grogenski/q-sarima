@@ -17,13 +17,16 @@ This code was developed to forecast 10-day (decendial) agrometeorological time s
 ## Project Structure
 - `dataset/`: Contains the JSON files with meteorological data sourced from NASA/POWER.
 - `results/`: Directory where the raw predictions and final evaluated metrics (RMSE, R² adj., MBE) are saved as CSV files.
-- `main.py`: The core script containing data preprocessing, the PennyLane quantum circuit definition, hybrid objective function, and the walk-forward validation loop.
+- `qsarima.py`: The core script containing data preprocessing, the PennyLane quantum circuit definition, hybrid objective function, and the walk-forward validation loop.
+- `config.yaml`: Configuration file to easily set experiment parameters (variables, climate, horizons, qubits) without modifying the source code.
+- `city_climate.json`: Auxiliary mapping file linking dataset files to their respective climate classifications.
+- `requirements.txt`: List of Python dependencies required to run the project.
 
 ## Requirements
-To run the Q-SARIMA pipeline, you need Python 3.8+ and the following libraries:
+To run the Q-SARIMA pipeline, you need Python 3.8+ and the libraries listed in the `requirements.txt` file. We recommend creating a virtual environment before installing the dependencies:
 
 ```
-pip install numpy pandas scipy tqdm joblib pmdarima pennylane
+pip install -r requirements.txt
 ```
 
 ## How to Run
@@ -36,10 +39,11 @@ cd q-sarima
 ```
 
 -Ensure the dataset/ folder contains the required JSON climate files.
--Execute the main script. The algorithm will automatically read the data, perform the AutoARIMA structural discovery, and run the COBYLA quantum optimization loop.
+-(Optional) Adjust the experiment parameters in the `config.yaml` file according to your needs.
+-Execute the main script passing the configuration file. The algorithm will automatically read the data, perform the AutoARIMA structural discovery, and run the COBYLA quantum optimization loop:
 
 ```
-python main.py
+python qsarima.py --config config.yaml
 ```
 _Note: Due to the computational overhead of simulating quantum circuits classically, the process may take some time depending on the number of configured CPU threads._
 
