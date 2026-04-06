@@ -1,0 +1,24 @@
+# =========================================================
+# Q-SARIMA Configuration File
+# =========================================================
+
+paths:
+  base_path: "results/"
+  data_path: "dataset/"
+  city_climate_map: "city_climate.json"
+
+experiment:
+  variables_to_predict: 
+    - "ALLSKY_SFC_SW_DWN"
+  target_climate: "Aw"
+  iterations: 
+    - [16, 2] # [Input, Horizon]
+  seasonal_period: 36
+
+quantum_circuit:
+  max_qubits: 4
+  optimizer_maxiter: 50
+
+validation:
+  min_train_years: 2
+  max_window_years: 5
