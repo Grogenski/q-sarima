@@ -38,7 +38,7 @@ git clone [https://github.com/Grogenski/q-sarima.git](https://github.com/Grogens
 cd q-sarima
 ```
 
--Ensure the dataset/ folder contains the required JSON climate files.
+-Ensure the `dataset/` folder contains the required JSON climate files.
 -(Optional) Adjust the experiment parameters in the `config.yaml` file according to your needs.
 -Execute the main script passing the configuration file. The algorithm will automatically read the data, perform the AutoARIMA structural discovery, and run the COBYLA quantum optimization loop:
 
