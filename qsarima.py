@@ -8,6 +8,8 @@ import os
 import json
 import time
 import gc
+import argparse
+import yaml
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
@@ -23,39 +25,35 @@ from pennylane import numpy as pnp
 warnings.filterwarnings('ignore')
 
 # =========================================================
-# 1) Parameters and Paths Definition
+# 1) Argument Parsing and Configuration Loading
 # =========================================================
 
-# Mapping of cities and their respective climates
-CITY_CLIMATE_MAP = {
-    'AM_Campos_de_Julio_MT.json': 'Am', 'AM_Dourados_MS.json': 'Am',
-    'AM_Maracaju_MS.json': 'Am', 'AM_Sapezal_MT.json': 'Am',
-    'AM_Sidrolandia_MS.json': 'Am', 'AW_Campo_Novo_do_Parecis_MT.json': 'Aw',
-    'AW_Diamantino_MT.json': 'Aw', 'AW_Jatai_GO.json': 'Aw',
-    'AW_Lucas_do_Rio_Verde_MT.json': 'Aw', 'AW_Nova_Mutum_MT.json': 'Aw',
-    'AW_Nova_Ubirata_MT.json': 'Aw', 'AW_Primavera_do_Leste_MT.json': 'Aw',
-    'AW_Rio_Verde_GO.json': 'Aw', 'AW_Sao_Desiderio_BA.json': 'Aw',
-    'AW_Sorriso_MT.json': 'Aw'
-}
+parser = argparse.ArgumentParser(description="Run Q-SARIMA experiments.")
+parser.add_argument('--config', type=str, default='config.yaml', help='Path to the configuration YAML file.')
+args = parser.parse_args()
 
-# Target Variable and Climate for the current execution
-# (These parameters vary according to the specific experiment)
-VARIABLES_TO_PREDICT = ['ALLSKY_SFC_SW_DWN']
-TARGET_CLIMATE = 'Aw'
-ITERATIONS = [(16, 2)]  # Example configuration (Input, Horizon)
-SEASONAL_PERIOD = 36
+with open(args.config, 'r') as file:
+    config = yaml.safe_load(file)
 
-# Quantum Circuit and Optimizer Parameters
-MAX_QUBITS = 4
-QUANTUM_OPTIMIZER_MAXITER = 50
+city_map_path = config['paths']['city_climate_map']
+with open(city_map_path, 'r') as file:
+    CITY_CLIMATE_MAP = json.load(file)
 
-# Hybrid Walk-Forward Validation Parameters
-MIN_TRAIN_YEARS = 2
-MAX_WINDOW_YEARS = 5
+VARIABLES_TO_PREDICT = config['experiment']['variables_to_predict']
+TARGET_CLIMATE = config['experiment']['target_climate']
 
-# Directory Paths
-BASE_PATH = 'results/'
-DATA_PATH = 'dataset/'
+ITERATIONS = [tuple(it) for it in config['experiment']['iterations']] 
+SEASONAL_PERIOD = config['experiment']['seasonal_period']
+
+MAX_QUBITS = config['quantum_circuit']['max_qubits']
+QUANTUM_OPTIMIZER_MAXITER = config['quantum_circuit']['optimizer_maxiter']
+
+MIN_TRAIN_YEARS = config['validation']['min_train_years']
+MAX_WINDOW_YEARS = config['validation']['max_window_years']
+
+BASE_PATH = config['paths']['base_path']
+DATA_PATH = config['paths']['data_path']
+
 os.makedirs(BASE_PATH, exist_ok=True)
 os.makedirs(DATA_PATH, exist_ok=True)
 
@@ -71,8 +69,7 @@ if not os.path.exists(RAW_PRED_CSV):
                           'order']).to_csv(RAW_PRED_CSV, index=False)
 if not os.path.exists(METRICS_CSV):
     pd.DataFrame(columns=['climate', 'variable', 'input_dec', 'RMSE', 'R2_adj', 'MBE', 'avg_qubits']).to_csv(METRICS_CSV,
-                                                                                                          index=False)
-
+                                                                                                             index=False)
 
 # =========================================================
 # 2) Data Manipulation Functions
