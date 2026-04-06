@@ -64,6 +64,6 @@ If you use this code or our methodology in your research, please cite our paper:
 This work was supported by the Coordenação de Aperfeiçoamento de Pessoal de Nível Superior - Brasil (CAPES) - Finance Code 001, the Manna Team, Softex, Fundação Araucária, and the Conselho Nacional de Desenvolvimento Científico e Tecnológico (CNPq) under grant 402015/2025-8 (Call CNPq/MCTI No. 44/2024 - Faixa B).
 
 ## License
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 
