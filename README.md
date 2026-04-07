@@ -6,6 +6,7 @@ Official repository for "Q-SARIMA: A Hybrid Quantum-Classical Extension of SARIM
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![PennyLane](https://img.shields.io/badge/PennyLane-Quantum-purple.svg)](https://pennylane.ai/)
+[![DOI](https://zenodo.org/badge/1203195094.svg)](https://doi.org/10.5281/zenodo.19446211)
 
 This repository contains the official implementation of the paper **"Q-SARIMA: A Hybrid Quantum-Classical Extension of SARIMA for Time Series Forecasting in Precision Agriculture"**, accepted at the International Joint Conference on Neural Networks (IJCNN).
 
